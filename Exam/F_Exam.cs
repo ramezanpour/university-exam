@@ -17,9 +17,11 @@ namespace Exam
         private List<Question> questions;
         private Queue<Question> selectedQuestions = new Queue<Question>();
         private List<Question> wrongAnswers = new List<Question>();
+        private List<Question> correctQuestions = new List<Question>();
         private readonly QuestionManager manager = new QuestionManager();
         private Question currentQuestion = null;
-        private int numberOfAnsweredQuestions = 0;
+        private int numberOfQuestions = 0;
+        private Dictionary<Question, int> retryQuestions = new Dictionary<Question, int>();
         private Random random = new Random();
         public F_Exam()
         {
@@ -43,14 +45,44 @@ namespace Exam
         {
             if (currentQuestion != null)
             {
-                numberOfAnsweredQuestions++;
+                foreach (var control in P_Answers.Controls)
+                {
+                    if (control is RadioButton && ((RadioButton)control).Checked)
+                    {
+                        var radio = (RadioButton)control;
+                        if (radio.Tag.ToString().Equals(currentQuestion.CorrectAnswerId.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            correctQuestions.Add(currentQuestion);
+                        }
+                        else
+                        {
+                            wrongAnswers.Add(currentQuestion);
+                            if (retryQuestions.ContainsKey(currentQuestion))
+                            {
+                                var i = retryQuestions[currentQuestion];
+                                retryQuestions[currentQuestion] = i + 1;
+                            } else
+                            {
+                                retryQuestions.Add(currentQuestion, 0);
+                            }
+
+                            if (retryQuestions[currentQuestion] < 3)
+                            {
+                                selectedQuestions.Enqueue(currentQuestion);
+                            }
+                        }
+                    }
+                }
             }
-            currentQuestion = selectedQuestions.Dequeue();
 
             if (selectedQuestions.Count == 0)
             {
-                MessageBox.Show($"Number of answered questions: {numberOfAnsweredQuestions}\nNumber of all questions:");
+                MessageBox.Show($"سوالات صحیح: {correctQuestions.Count} \nسوالات اشتباه: {wrongAnswers.Count} \nکل سوالات: {numberOfQuestions}");
                 this.Close();
+            }
+            else
+            {
+                currentQuestion = selectedQuestions.Dequeue();
             }
 
             BindItems();
@@ -63,7 +95,8 @@ namespace Exam
             int rowIndex = 0;
             foreach (var item in currentQuestion.Items)
             {
-                var radio = new RadioButton {
+                var radio = new RadioButton
+                {
                     Tag = item.Id,
                     Text = item.Title,
                     TextAlign = ContentAlignment.MiddleRight
@@ -76,8 +109,8 @@ namespace Exam
         private void F_Exam_Load(object sender, EventArgs e)
         {
             questions = manager.GetAllQuestions();
+            numberOfQuestions = questions.Count;
 
-            
             while (questions.Count > 0)
             {
                 AddSelectedQuestion();
@@ -94,7 +127,8 @@ namespace Exam
             {
                 selectedQuestions.Enqueue(questions[questionIndex]);
                 questions.RemoveAt(questionIndex);
-            } else
+            }
+            else
             {
                 AddSelectedQuestion();
             }
