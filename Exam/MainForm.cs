@@ -19,11 +19,8 @@ namespace Exam
 
         private void MI_QuestionManager_Click(object sender, EventArgs e)
         {
-            var questionForm = new F_Questions();
-            if (questionForm.ShowDialog() == DialogResult.OK)
-            {
-                // TODO: refresh
-            }
+            var loginForm = new F_Login();
+            loginForm.ShowDialog();
         }
 
         private void B_StartExam_Click(object sender, EventArgs e)

@@ -61,6 +61,12 @@
     <Compile Include="F_Exam.Designer.cs">
       <DependentUpon>F_Exam.cs</DependentUpon>
     </Compile>
+    <Compile Include="F_Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_Login.Designer.cs">
+      <DependentUpon>F_Login.cs</DependentUpon>
+    </Compile>
     <Compile Include="F_Questions.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,6 +86,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="F_Exam.resx">
       <DependentUpon>F_Exam.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Login.resx">
+      <DependentUpon>F_Login.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="F_Questions.resx">
       <DependentUpon>F_Questions.cs</DependentUpon>
