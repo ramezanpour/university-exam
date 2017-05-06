@@ -61,7 +61,8 @@ namespace Exam
                             {
                                 var i = retryQuestions[currentQuestion];
                                 retryQuestions[currentQuestion] = i + 1;
-                            } else
+                            }
+                            else
                             {
                                 retryQuestions.Add(currentQuestion, 0);
                             }
@@ -70,6 +71,26 @@ namespace Exam
                             {
                                 selectedQuestions.Enqueue(currentQuestion);
                             }
+
+                            // Highlight the wrong answer
+                            radio.BackColor = Color.Red;
+
+                            // Show the correct answer
+                            foreach (var c in P_Answers.Controls)
+                            {
+                                if (c is RadioButton)
+                                {
+                                    var r = (RadioButton)c;
+                                    if (r.Tag.ToString().Equals(currentQuestion.CorrectAnswerId.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                                    {
+                                        r.BackColor = Color.Green;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            Application.DoEvents();
+                            System.Threading.Thread.Sleep(2000);
                         }
                     }
                 }
