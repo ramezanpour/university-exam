@@ -59,7 +59,7 @@ namespace Exam
                     question.Items.Add(answer4);
 
                     DetermineCorrectAnswer(question, answer1, answer2, answer3, answer4);
-
+                    question.CategoryId = Guid.Parse(CB_Category.SelectedValue.ToString());
                     manager.Add(question);
                     MessageBox.Show("سوال مورد نظر با موفقیت اضافه شد.", "پیام سیستم", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     this.DialogResult = DialogResult.OK;
@@ -149,6 +149,7 @@ namespace Exam
 
         private void F_AddEditQuestion_Load(object sender, EventArgs e)
         {
+            BindCategories();
             B_Delete.Visible = !IsAdd;
 
             if (!IsAdd)
@@ -156,6 +157,13 @@ namespace Exam
                 question = manager.GetQuestionById(QuestionId);
                 FillItems(question);
             }
+        }
+
+        private void BindCategories()
+        {
+            CB_Category.DisplayMember = "Name";
+            CB_Category.ValueMember = "Id";
+            CB_Category.DataSource = manager.GetAllCategories();
         }
 
         private void FillItems(Question question)

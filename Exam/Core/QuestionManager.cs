@@ -3,30 +3,29 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace Exam.Core
 {
     public sealed class QuestionManager
     {
-        private const string databaseFile = "db.xml";
-        private readonly string LocalStorageLocation;
+        private const string DatabaseFile = "db.xml";
+        private readonly string _localStorageLocation;
 
         public QuestionManager()
         {
-            string dirName = "Exam";
-            LocalStorageLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), dirName);
+            const string dirName = "Exam";
+            _localStorageLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                dirName);
 
-            if (!Directory.Exists(LocalStorageLocation))
+            if (!Directory.Exists(_localStorageLocation))
             {
-                Directory.CreateDirectory(LocalStorageLocation);
+                Directory.CreateDirectory(_localStorageLocation);
             }
 
-            LocalStorageLocation = Path.Combine(LocalStorageLocation, databaseFile);
+            _localStorageLocation = Path.Combine(_localStorageLocation, DatabaseFile);
 
-            if (!File.Exists(LocalStorageLocation))
+            if (!File.Exists(_localStorageLocation))
             {
                 CreateEmptyDatabase();
             }
@@ -34,14 +33,17 @@ namespace Exam.Core
 
         private void CreateEmptyDatabase()
         {
-            XDocument xdoc = new XDocument();
-            xdoc.Add(new XElement("Questions"));
-            xdoc.Save(LocalStorageLocation);
+            var xdoc = new XDocument();
+            var root = new XElement("Db");
+            root.Add(new XElement("Questions"));
+            root.Add(new XElement("Categories"));
+            xdoc.Add(root);
+            xdoc.Save(_localStorageLocation);
         }
 
         private XDocument LoadDatabase()
         {
-            return XDocument.Load(LocalStorageLocation);
+            return XDocument.Load(_localStorageLocation);
         }
 
         public void Add(Question entity)
@@ -52,6 +54,7 @@ namespace Exam.Core
                 new XAttribute("correct-answer", entity.CorrectAnswerId),
                 new XAttribute("created-on", entity.CreatedOn),
                 new XElement("Title", entity.Title),
+                new XAttribute("category-id", entity.CategoryId),
                 new XElement("Items"));
 
             foreach (var item in entity.Items)
@@ -62,53 +65,60 @@ namespace Exam.Core
                         item.Title));
             }
 
-            xdoc.Element("Questions").Add(question);
+            xdoc.Element("Db").Element("Questions").Add(question);
 
-            xdoc.Save(LocalStorageLocation);
+            xdoc.Save(_localStorageLocation);
         }
 
         public void Delete(Guid id)
         {
             var xdoc = LoadDatabase();
-            xdoc.Element("Questions").Elements("Question").FirstOrDefault(k => k.Attribute("id").Value == id.ToString()).Remove();
+            xdoc.Element("Db").Element("Questions").Elements("Question").FirstOrDefault(k => k.Attribute("id").Value == id.ToString())
+                .Remove();
 
-            xdoc.Save(LocalStorageLocation);
+            xdoc.Save(_localStorageLocation);
         }
 
         public void Edit(Question entity)
         {
             var xdoc = LoadDatabase();
 
-            var question = xdoc.Element("Questions").Elements("Question").FirstOrDefault(k => k.Attribute("id").Value == entity.Id.ToString());
+            var question = xdoc.Element("Db").Element("Questions").Elements("Question")
+                .FirstOrDefault(k => k.Attribute("id").Value == entity.Id.ToString());
             question.Element("Title").Value = entity.Title;
             question.Attribute("correct-answer").Value = entity.CorrectAnswerId.ToString();
+            question.Attribute("category-id").Value = entity.CategoryId.ToString();
 
             foreach (var item in entity.Items)
             {
-                var questionItem = question.Element("Items").Elements("Item").FirstOrDefault(k => k.Attribute("id").Value.Equals(item.Id.ToString(), StringComparison.InvariantCultureIgnoreCase));
+                var questionItem = question.Element("Items").Elements("Item").FirstOrDefault(k => k.Attribute("id")
+                    .Value.Equals(item.Id.ToString(), StringComparison.InvariantCultureIgnoreCase));
                 questionItem.Value = item.Title;
             }
 
 
-            xdoc.Save(LocalStorageLocation);
+            xdoc.Save(_localStorageLocation);
         }
 
         public Question GetQuestionById(Guid id)
         {
             var xdoc = LoadDatabase();
-            var question = xdoc.Element("Questions").Elements("Question").FirstOrDefault(k => k.Attribute("id").Value == id.ToString());
+            var question = xdoc.Element("Db").Element("Questions").Elements("Question")
+                .FirstOrDefault(k => k.Attribute("id").Value == id.ToString());
             return ParseQuestion(question);
         }
 
-        private Question ParseQuestion(XElement question)
+        private static Question ParseQuestion(XElement question)
         {
-            var result = new Question();
-            result.Items = new List<QuestionItem>();
+            var result = new Question
+            {
+                Items = new List<QuestionItem>(),
+                Title = question.Element("Title").Value,
+                CorrectAnswerId = new Guid(question.Attribute("correct-answer").Value),
+                CreatedOn = DateTime.Parse(question.Attribute("created-on").Value),
+                Id = new Guid(question.Attribute("id").Value)
+            };
 
-            result.Title = question.Element("Title").Value;
-            result.CorrectAnswerId = new Guid(question.Attribute("correct-answer").Value);
-            result.CreatedOn = DateTime.Parse(question.Attribute("created-on").Value);
-            result.Id = new Guid(question.Attribute("id").Value);
 
             var items = question.Element("Items").Elements("Item");
 
@@ -124,17 +134,58 @@ namespace Exam.Core
             return result;
         }
 
+        public void AddCategory(string name)
+        {
+            UpdateDatabaseIfNeeded();
+            var xdoc = LoadDatabase();
+            var element = new XElement("item", new XAttribute("id", Guid.NewGuid()), name);
+            xdoc.Element("Db").Element("Categories").Add(element);
+
+            xdoc.Save(_localStorageLocation);
+        }
+
+        public void EditCategory(Guid id, string name)
+        {
+            UpdateDatabaseIfNeeded();
+            var xdoc = LoadDatabase();
+            xdoc.Element("Db").Element("Categories").Elements("item").FirstOrDefault(k => k.Attribute("id").Value == id.ToString())
+                .SetValue(name);
+            xdoc.Save(_localStorageLocation);
+        }
+
+        private void UpdateDatabaseIfNeeded()
+        {
+            var xdoc = LoadDatabase();
+            if (xdoc.Element("Db").Element("Categories") != null) return;
+            xdoc.Element("Db").Add(new XElement("Categories"));
+            xdoc.Save(_localStorageLocation);
+        }
+
         public List<Question> GetAllQuestions()
         {
             var result = new List<Question>();
             var xdoc = LoadDatabase();
-            var question = xdoc.Element("Questions").Elements("Question");
+            var question = xdoc.Element("Db").Element("Questions").Elements("Question");
 
             foreach (var item in question)
             {
                 result.Add(ParseQuestion(item));
             }
 
+            return result;
+        }
+
+        public List<Category> GetAllCategories()
+        {
+            UpdateDatabaseIfNeeded();
+            var xdoc = LoadDatabase();
+            var categories = xdoc.Element("Db").Element("Categories").Elements("item");
+            var result = categories.Select(item => new Category
+                {
+                    Id = Guid.Parse(item.Attribute("id").Value),
+                    Name = item.Value
+                })
+                .ToList();
             return result;
         }
     }

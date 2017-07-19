@@ -46,14 +46,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Extensions.cs" />
+    <Compile Include="Core\Model\Category.cs" />
     <Compile Include="Core\Model\QuestionItem.cs" />
     <Compile Include="Core\Model\Question.cs" />
     <Compile Include="Core\QuestionManager.cs" />
+    <Compile Include="F_AddEditCategory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_AddEditCategory.Designer.cs">
+      <DependentUpon>F_AddEditCategory.cs</DependentUpon>
+    </Compile>
     <Compile Include="F_AddEditQuestion.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="F_AddEditQuestion.Designer.cs">
       <DependentUpon>F_AddEditQuestion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_Categories.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_Categories.Designer.cs">
+      <DependentUpon>F_Categories.cs</DependentUpon>
     </Compile>
     <Compile Include="F_Exam.cs">
       <SubType>Form</SubType>
@@ -81,8 +94,14 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="F_AddEditCategory.resx">
+      <DependentUpon>F_AddEditCategory.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="F_AddEditQuestion.resx">
       <DependentUpon>F_AddEditQuestion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Categories.resx">
+      <DependentUpon>F_Categories.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="F_Exam.resx">
       <DependentUpon>F_Exam.cs</DependentUpon>

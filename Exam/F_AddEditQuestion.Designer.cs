@@ -46,6 +46,8 @@
             this.B_Save = new System.Windows.Forms.Button();
             this.B_Cancel = new System.Windows.Forms.Button();
             this.B_Delete = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.CB_Category = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -79,7 +81,7 @@
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Location = new System.Drawing.Point(12, 52);
+            this.groupBox1.Location = new System.Drawing.Point(12, 102);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(549, 136);
             this.groupBox1.TabIndex = 3;
@@ -200,7 +202,7 @@
             // 
             // B_Save
             // 
-            this.B_Save.Location = new System.Drawing.Point(93, 194);
+            this.B_Save.Location = new System.Drawing.Point(93, 244);
             this.B_Save.Name = "B_Save";
             this.B_Save.Size = new System.Drawing.Size(75, 23);
             this.B_Save.TabIndex = 4;
@@ -210,7 +212,7 @@
             // 
             // B_Cancel
             // 
-            this.B_Cancel.Location = new System.Drawing.Point(12, 194);
+            this.B_Cancel.Location = new System.Drawing.Point(12, 244);
             this.B_Cancel.Name = "B_Cancel";
             this.B_Cancel.Size = new System.Drawing.Size(75, 23);
             this.B_Cancel.TabIndex = 5;
@@ -219,7 +221,7 @@
             // 
             // B_Delete
             // 
-            this.B_Delete.Location = new System.Drawing.Point(489, 195);
+            this.B_Delete.Location = new System.Drawing.Point(489, 245);
             this.B_Delete.Name = "B_Delete";
             this.B_Delete.Size = new System.Drawing.Size(75, 23);
             this.B_Delete.TabIndex = 6;
@@ -227,12 +229,32 @@
             this.B_Delete.UseVisualStyleBackColor = true;
             this.B_Delete.Click += new System.EventHandler(this.B_Delete_Click);
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(531, 49);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(33, 13);
+            this.label6.TabIndex = 7;
+            this.label6.Text = "درس:";
+            // 
+            // CB_Category
+            // 
+            this.CB_Category.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CB_Category.FormattingEnabled = true;
+            this.CB_Category.Location = new System.Drawing.Point(12, 65);
+            this.CB_Category.Name = "CB_Category";
+            this.CB_Category.Size = new System.Drawing.Size(549, 21);
+            this.CB_Category.TabIndex = 8;
+            // 
             // F_AddEditQuestion
             // 
             this.AcceptButton = this.B_Save;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(576, 227);
+            this.ClientSize = new System.Drawing.Size(576, 279);
+            this.Controls.Add(this.CB_Category);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.B_Delete);
             this.Controls.Add(this.B_Cancel);
             this.Controls.Add(this.B_Save);
@@ -275,5 +297,7 @@
         private System.Windows.Forms.Button B_Save;
         private System.Windows.Forms.Button B_Cancel;
         private System.Windows.Forms.Button B_Delete;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox CB_Category;
     }
 }

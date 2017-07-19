@@ -19,14 +19,20 @@ namespace Exam
 
         private void MI_QuestionManager_Click(object sender, EventArgs e)
         {
-            var loginForm = new F_Login();
-            loginForm.ShowDialog();
+            var questions = new F_Questions();
+            questions.ShowDialog();
         }
 
         private void B_StartExam_Click(object sender, EventArgs e)
         {
             F_Exam examForm = new F_Exam();
             examForm.ShowDialog();
+        }
+
+        private void MI_Categories_Click(object sender, EventArgs e)
+        {
+            var categoriesForm = new F_Categories();
+            categoriesForm.ShowDialog();
         }
     }
 }

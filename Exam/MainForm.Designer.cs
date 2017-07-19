@@ -31,6 +31,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.مدیریتToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MI_QuestionManager = new System.Windows.Forms.ToolStripMenuItem();
+            this.MI_Categories = new System.Windows.Forms.ToolStripMenuItem();
             this.دانشآموزToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.B_StartExam = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
@@ -50,9 +51,10 @@
             // مدیریتToolStripMenuItem
             // 
             this.مدیریتToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MI_QuestionManager});
+            this.MI_QuestionManager,
+            this.MI_Categories});
             this.مدیریتToolStripMenuItem.Name = "مدیریتToolStripMenuItem";
-            this.مدیریتToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
+            this.مدیریتToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
             this.مدیریتToolStripMenuItem.Text = "مدیریت";
             // 
             // MI_QuestionManager
@@ -62,18 +64,25 @@
             this.MI_QuestionManager.Text = "مدیریت سوالات";
             this.MI_QuestionManager.Click += new System.EventHandler(this.MI_QuestionManager_Click);
             // 
+            // MI_Categories
+            // 
+            this.MI_Categories.Name = "MI_Categories";
+            this.MI_Categories.Size = new System.Drawing.Size(152, 22);
+            this.MI_Categories.Text = "مدیریت دروس";
+            this.MI_Categories.Click += new System.EventHandler(this.MI_Categories_Click);
+            // 
             // دانشآموزToolStripMenuItem
             // 
             this.دانشآموزToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.B_StartExam});
             this.دانشآموزToolStripMenuItem.Name = "دانشآموزToolStripMenuItem";
-            this.دانشآموزToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
+            this.دانشآموزToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
             this.دانشآموزToolStripMenuItem.Text = "دانش آموز";
             // 
             // B_StartExam
             // 
             this.B_StartExam.Name = "B_StartExam";
-            this.B_StartExam.Size = new System.Drawing.Size(152, 22);
+            this.B_StartExam.Size = new System.Drawing.Size(135, 22);
             this.B_StartExam.Text = "شروع امتحان";
             this.B_StartExam.Click += new System.EventHandler(this.B_StartExam_Click);
             // 
@@ -101,5 +110,6 @@
         private System.Windows.Forms.ToolStripMenuItem MI_QuestionManager;
         private System.Windows.Forms.ToolStripMenuItem دانشآموزToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem B_StartExam;
+        private System.Windows.Forms.ToolStripMenuItem MI_Categories;
     }
 }
