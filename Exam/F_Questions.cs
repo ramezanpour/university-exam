@@ -27,7 +27,7 @@ namespace Exam
         private void BindGrid()
         {
             DGV_Main.AutoGenerateColumns = false;
-            DGV_Main.DataSource = manager.GetAllQuestions();
+            DGV_Main.DataSource = manager.GetAllQuestions(Guid.Empty);
         }
 
         private void B_Add_Click(object sender, EventArgs e)

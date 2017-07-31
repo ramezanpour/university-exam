@@ -25,8 +25,8 @@ namespace Exam
 
         private void B_StartExam_Click(object sender, EventArgs e)
         {
-            F_Exam examForm = new F_Exam();
-            examForm.ShowDialog();
+            var selectCourse = new F_SelectCourse();
+            selectCourse.ShowDialog();
         }
 
         private void MI_Categories_Click(object sender, EventArgs e)

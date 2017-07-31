@@ -73,7 +73,8 @@ namespace Exam.Core
         public void Delete(Guid id)
         {
             var xdoc = LoadDatabase();
-            xdoc.Element("Db").Element("Questions").Elements("Question").FirstOrDefault(k => k.Attribute("id").Value == id.ToString())
+            xdoc.Element("Db").Element("Questions").Elements("Question")
+                .FirstOrDefault(k => k.Attribute("id").Value == id.ToString())
                 .Remove();
 
             xdoc.Save(_localStorageLocation);
@@ -148,7 +149,8 @@ namespace Exam.Core
         {
             UpdateDatabaseIfNeeded();
             var xdoc = LoadDatabase();
-            xdoc.Element("Db").Element("Categories").Elements("item").FirstOrDefault(k => k.Attribute("id").Value == id.ToString())
+            xdoc.Element("Db").Element("Categories").Elements("item")
+                .FirstOrDefault(k => k.Attribute("id").Value == id.ToString())
                 .SetValue(name);
             xdoc.Save(_localStorageLocation);
         }
@@ -161,18 +163,17 @@ namespace Exam.Core
             xdoc.Save(_localStorageLocation);
         }
 
-        public List<Question> GetAllQuestions()
+        public List<Question> GetAllQuestions(Guid categoryId)
         {
-            var result = new List<Question>();
             var xdoc = LoadDatabase();
             var question = xdoc.Element("Db").Element("Questions").Elements("Question");
-
-            foreach (var item in question)
+            if (categoryId != Guid.Empty)
             {
-                result.Add(ParseQuestion(item));
+                question = question.Where(k => k
+                    .Attribute("category-id").Value.Equals(categoryId.ToString(), StringComparison.OrdinalIgnoreCase));
             }
 
-            return result;
+            return question.Select(ParseQuestion).ToList();
         }
 
         public List<Category> GetAllCategories()
