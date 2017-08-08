@@ -21,9 +21,7 @@ namespace Exam
         {
             if (TB_Password.Text == "123qwe!@#QWE")
             {
-                F_Questions questionsManager = new F_Questions();
-                questionsManager.ShowDialog();
-                Hide();
+                DialogResult = DialogResult.OK;
             }
             else
             {

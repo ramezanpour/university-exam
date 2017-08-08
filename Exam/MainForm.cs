@@ -19,8 +19,12 @@ namespace Exam
 
         private void MI_QuestionManager_Click(object sender, EventArgs e)
         {
-            var questions = new F_Questions();
-            questions.ShowDialog();
+            var loginForm = new F_Login();
+            if (loginForm.ShowDialog() == DialogResult.OK)
+            {
+                var questions = new F_Questions();
+                questions.ShowDialog();
+            }
         }
 
         private void B_StartExam_Click(object sender, EventArgs e)
@@ -31,8 +35,12 @@ namespace Exam
 
         private void MI_Categories_Click(object sender, EventArgs e)
         {
-            var categoriesForm = new F_Categories();
-            categoriesForm.ShowDialog();
+            var loginForm = new F_Login();
+            if (loginForm.ShowDialog() == DialogResult.OK)
+            {
+                var categoriesForm = new F_Categories();
+                categoriesForm.ShowDialog();
+            }
         }
     }
 }
